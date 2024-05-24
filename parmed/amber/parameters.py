@@ -663,7 +663,9 @@ class AmberParameterSet(ParameterSet, metaclass=FileFormatType):
         a3 = a3.strip(); a4 = a4.strip()
         # Pre-sort the improper types, assuming atom3 is the central atom (which
         # it must be in Amber parameter files!!!!)
-        a1, a2, a4 = sorted([a1, a2, a4])
+        # NOTE(MCA): Disabled sorting.  Not all Amber parameters follow this rule.
+        # Ex: CB-C5-N*-CT in parm10.dat and parm19.dat.
+        #a1, a2, a4 = sorted([a1, a2, a4])
         key = (a1, a2, a3, a4)
         self.improper_periodic_types[key] = DihedralType(float(k), float(per), float(phi))
 

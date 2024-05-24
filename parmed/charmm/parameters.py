@@ -8,6 +8,7 @@ import warnings
 from copy import copy as _copy
 from collections import OrderedDict
 from itertools import combinations
+from typing import Tuple
 
 from ..constants import TINY
 from ..exceptions import CharmmError, ParameterWarning
@@ -21,6 +22,7 @@ from ..utils.io import genopen
 from ._charmmfile import CharmmFile, CharmmStreamFile
 
 _penaltyre = re.compile(r'penalty\s*=\s*([\d\.]+)')
+
 
 class _EmptyStringIterator(object):
     """ Always yields an empty string """
@@ -1166,9 +1168,9 @@ class CharmmParameterSet(ParameterSet, CharmmImproperMatchingMixin):
         f.write('\nIMPROPERS\n')
         written = set()
         for key, typ in sorted(self.improper_periodic_types.items(), key=lambda x: x[0]):
-                f.write(
-                    f'{key[0]:<6s} {key[1]:<6s} {key[2]:<6s} {key[3]:<6s} {typ.phi_k:11.4f} {int(typ.per):2d} {typ.phase:8.2f}\n'
-                )
+            f.write(
+                f'{key[0]:<6s} {key[1]:<6s} {key[2]:<6s} {key[3]:<6s} {typ.phi_k:11.4f} {int(typ.per):2d} {typ.phase:8.2f}\n'
+            )
         for key, typ in self.improper_types.items():
             f.write(
                 f'{key[0]:<6s} {key[1]:<6s} {key[2]:<6s} {key[3]:<6s} {typ.psi_k:11.4f} {0:2d} {typ.psi_eq:8.2f}\n'
