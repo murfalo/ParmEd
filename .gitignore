@@ -12,3 +12,6 @@ package.json
 .ipynb_checkpoints
 *.egg-info/
 *.so
+/dist/
+/test/files/ash.parm7.*
+/test/files/diffs/
