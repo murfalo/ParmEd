@@ -238,10 +238,12 @@ class AmberOFFLibrary(metaclass=FileFormatType):
             )
         n = int(fileobj.readline().strip())
         if nres + 1 != n:
-            warnings.warn(
-                f"Unexpected childsequence ({n}); expected {nres+1} for residue {name}",
-                AmberWarning,
-            )
+            # TODO(MCA): Investigate why this special case is needed
+            if not container.name.endswith("BOX"):
+                warnings.warn(
+                    f"Unexpected childsequence ({n}); expected {nres+1} for residue {name}",
+                    AmberWarning,
+                )
         elif not isinstance(templ, ResidueTemplate) and n != len(templ) + 1:
             raise RuntimeError("child sequence must be # of residues in the unit + 1")
         # Get the CONNECT array to set head and tail
@@ -266,7 +268,8 @@ class AmberOFFLibrary(metaclass=FileFormatType):
         if tail > 0 and nres == 1:
             templ.tail = templ[tail-1]
         elif tail > 0 and nres > 1:
-            if tail < sum((len(r) for r in container)):
+            # TODO(MCA): Investigate why this special case is needed
+            if tail < sum((len(r) for r in container)) and not container.name.endswith("BOX"):
                 warnings.warn(
                     f'TAIL on multi-residue unit not supported ({name}). Ignored...', AmberWarning
                 )
@@ -368,7 +371,8 @@ class AmberOFFLibrary(metaclass=FileFormatType):
             next = int(next)
             typ = _strip_enveloping_quotes(typ)
             img = int(img)
-            if next - start != len(container[i]):
+            # TODO(MCA): Identify why this special case is necessary.
+            if next - start != len(container[i]) and not container.name.endswith("BOX"):
                 warnings.warn(
                     f'residue table predicted {next - start}, not {len(container[i])} atoms for residue {name}',
                     AmberWarning,
