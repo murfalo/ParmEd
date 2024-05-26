@@ -5183,7 +5183,8 @@ class AtomType:
                 if self.charge is not other.charge:
                     return False
             elif abs(self.charge - other.charge) > TINY:
-                return True
+                # TODO(MCA): What in tarnation, this should be False right?
+                return False
             # At this point, we have all the attributes we need to compare
             return (abs(self.epsilon - other.epsilon) < TINY and
                     abs(self.rmin - other.rmin) < TINY and
