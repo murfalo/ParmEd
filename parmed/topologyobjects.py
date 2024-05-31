@@ -5186,10 +5186,12 @@ class AtomType:
                 # TODO(MCA): What in tarnation, this should be False right?
                 return False
             # At this point, we have all the attributes we need to compare
-            return (abs(self.epsilon - other.epsilon) < TINY and
-                    abs(self.rmin - other.rmin) < TINY and
-                    abs(self.epsilon_14 - other.epsilon_14) < TINY and
-                    abs(self.rmin_14 - other.rmin_14) < TINY and
+            # TODO(MCA): Expand rel_tol to other comparisons?
+            rel_tol = 1e-5 # TODO(MCA): Move to CONSTANT
+            return (math.isclose(self.epsilon, other.epsilon, rel_tol=rel_tol) and
+                    math.isclose(self.rmin, other.rmin, rel_tol=rel_tol) and
+                    math.isclose(self.epsilon_14, other.epsilon_14, rel_tol=rel_tol) and
+                    math.isclose(self.rmin_14, other.rmin_14, rel_tol=rel_tol) and
                     self.nbfix == other.nbfix)
         if isinstance(other, str):
             return self.name == other
